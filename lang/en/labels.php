@@ -93,6 +93,8 @@ return [
                 'status'                => 'Status',
                 'created_at'            => 'Created At',
                 'updated_at'            => 'Updated At',
+                'name'                  => 'Name',
+                'details'               => 'Details',
             ],
 
         ],

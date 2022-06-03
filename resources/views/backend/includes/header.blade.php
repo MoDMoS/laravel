@@ -14,9 +14,6 @@ $notifications_latest = optional($notifications)->take(5);
         <a class="header-brand d-md-none" href="#">
             <img class="sidebar-brand-full" src="{{asset("img/backend-logo.jpg")}}" height="46" alt="{{ app_name() }}">
         </a>
-        <ul class="header-nav d-none d-md-flex">
-            <li class="nav-item"><a class="nav-link" href="{{ route('frontend.index') }}" target="_blank">{{app_name()}}&nbsp;<i class="cil-external-link"></i></a></li>
-        </ul>
         <ul class="header-nav ms-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
