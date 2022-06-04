@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Notification;
+use App\Models\Test;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +29,7 @@ class TestController extends Controller
         $this->module_icon = 'c-icon fas fa-bell';
 
         // module model name, path
-        $this->module_model = "App\Models\User";
+        $this->module_model = "App\Models\Test";
     }
 
     public function index()
@@ -48,14 +49,14 @@ class TestController extends Controller
         Log::info(label_case($module_title.' '.$module_action).' | User:'.Auth::user()->name.'(ID:'.Auth::user()->id.')');
 
         return view(
-            "backend.$module_path",
+            "backend.$module_path.index",
             compact('module_title', 'module_name', "$module_name", 'module_path', 'module_icon', 'module_action', 'module_name_singular', 'unread_notifications_count')
         );
     }
 
     public function create()
     {
-        return view('backend.create');
+        return view('backend.test.create');
     }
   
     /**
@@ -73,7 +74,7 @@ class TestController extends Controller
       
         Product::create($request->all());
        
-        return redirect()->route('backend.index')
+        return redirect()->route('backend.test.index')
                         ->with('success','Product created successfully.');
     }
   
@@ -85,7 +86,7 @@ class TestController extends Controller
      */
     public function show(Product $product)
     {
-        return view('backend.show',compact('product'));
+        return view('backend.test.show',compact('product'));
     }
   
     /**
@@ -96,7 +97,7 @@ class TestController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('backend.edit',compact('product'));
+        return view('backend.test.edit',compact('product'));
     }
   
     /**
@@ -115,7 +116,7 @@ class TestController extends Controller
       
         $product->update($request->all());
       
-        return redirect()->route('backend.index')
+        return redirect()->route('backend.test.index')
                         ->with('success','Product updated successfully');
     }
     /**
@@ -128,7 +129,7 @@ class TestController extends Controller
     {
         $product->delete();
        
-        return redirect()->route('backend.index')
+        return redirect()->route('backend.test.index')
                         ->with('success','Product deleted successfully');
     }
 }
