@@ -24,20 +24,37 @@
         {{-- {{ html()->form('POST', route("backend.$module_name"))->acceptsFiles()->class('form')->open() }} --}}
         <!-- Dashboard Content Area -->
         <div class="row mb-3">
-            <div class="col-12 col-sm-4">
+            {{-- <div class="col-12 col-sm-4">
                 <div class="form-group">
-                    <?php
-                    $field_name = 'name';
-                    $field_lable = label_case($field_name);
-                    $field_placeholder = $field_lable;
-                    $required = "required";
-                    ?>
+                    
                     {{ html()->label($field_lable, $field_name)->class('form-label') }} {!! fielf_required($required) !!}
                     {{ html()->text($field_name)->placeholder($field_placeholder)->class('form-control')->attributes(["$required"]) }}
                 
                     
                 </div>
-            </div>
+            </div> --}}
+            <form action="{{ route('backend.test.store') }}" method="POST">
+                @csrf
+              
+                 <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <strong>Name:</strong>
+                            <input type="text" name="name" class="form-control" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <strong>Detail:</strong>
+                            <textarea class="form-control" style="height:150px" name="detail" placeholder="Detail"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+               
+            </form>
         </div>
         <label class="" style="font-size:20px">test</label>
         <input type="text" class="form-control" placeholder="test" name="test">

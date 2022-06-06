@@ -72,64 +72,64 @@ class TestController extends Controller
             'detail' => 'required',
         ]);
       
-        Product::create($request->all());
+        Test::create($request->all());
        
         return redirect()->route('backend.test.index')
-                        ->with('success','Product created successfully.');
+                        ->with('success','Test created successfully.');
     }
   
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Test  $Test
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Test $Test)
     {
-        return view('backend.test.show',compact('product'));
+        return view('backend.test.show',compact('Test'));
     }
   
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Test  $Test
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Test $Test)
     {
-        return view('backend.test.edit',compact('product'));
+        return view('backend.test.edit',compact('Test'));
     }
   
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Test  $Test
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Test $Test)
     {
         $request->validate([
             'name' => 'required',
             'detail' => 'required',
         ]);
       
-        $product->update($request->all());
+        $Test->update($request->all());
       
         return redirect()->route('backend.test.index')
-                        ->with('success','Product updated successfully');
+                        ->with('success','Test updated successfully');
     }
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Test  $Test
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Test $Test)
     {
-        $product->delete();
+        $Test->delete();
        
         return redirect()->route('backend.test.index')
-                        ->with('success','Product deleted successfully');
+                        ->with('success','Test deleted successfully');
     }
 }

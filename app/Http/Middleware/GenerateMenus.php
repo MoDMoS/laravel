@@ -31,7 +31,7 @@ class GenerateMenus
             ]);
 
             $menu->add('<i class="nav-icon"></i> testing', [
-                'route' => 'backend.test',
+                'route' => 'backend.test.index',
                 'class' => 'nav-item',
             ])
             ->data([
