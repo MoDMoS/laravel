@@ -68,8 +68,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Backend', 'prefix' => 'admin'
     $controller_name = 'TestController';
     Route::get('/', 'BackendController@index')->name('home');
     Route::get('dashboard', 'BackendController@index')->name('dashboard');
-    Route::get("test", 'TestController@index')->name('test');
-    Route::resource("$module_name", "$controller_name");
+    Route::resource('test', 'TestController');
 
     /*
      *

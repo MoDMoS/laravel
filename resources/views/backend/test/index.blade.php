@@ -49,6 +49,12 @@
                             <textarea class="form-control" style="height:150px" name="detail" placeholder="Detail"></textarea>
                         </div>
                     </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <strong>Image:</strong>
+                            <input type="file" name="image" class="form-control" placeholder="image">
+                        </div>
+                    </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                             <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
@@ -56,9 +62,6 @@
                
             </form>
         </div>
-        <label class="" style="font-size:20px">test</label>
-        <input type="text" class="form-control" placeholder="test" name="test">
-        <button type="button" class="btn btn-primary" name="" style="margin-top:10px; position:relative; margin-left:50%" onclick="alert('test')">test</button>
         
         <!-- / Dashboard Content Area -->
 

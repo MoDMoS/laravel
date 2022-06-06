@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Http\Controllers\Controller;
 use App\Models\Test;
 use Carbon\Carbon;
@@ -54,82 +55,117 @@ class TestController extends Controller
         );
     }
 
-    public function create()
-    {
-        return view('backend.test.create');
-    }
-  
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'detail' => 'required',
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Store';
+
+        $validatedData = $request->validate([
+            'name' => 'required'
         ]);
-      
-        Test::create($request->all());
-       
-        return redirect()->route('backend.test.index')
-                        ->with('success','Test created successfully.');
+
+        $$module_name_singular = $module_model::create($request->except('image'));
+
+        if ($request->image) {
+            $media = $$module_name_singular->addMedia($request->file('image'))->toMediaCollection($module_name);
+            $$module_name_singular->image = $media->getUrl();
+            $$module_name_singular->save();
+        }
+
+        flash(icon().' '.Str::singular($module_title)."' Created.")->success()->important();
+
+        logUserAccess($module_title.' '.$module_action.' | Id: '.$$module_name_singular->id);
+
+        return redirect("admin/$module_name");
     }
-  
+
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Test  $Test
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return Response
      */
-    public function show(Test $Test)
+    public function show($id)
     {
-        return view('backend.test.show',compact('Test'));
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Show';
+
+        $$module_name_singular = $module_model::findOrFail($id);
+
+        $posts = $$module_name_singular->posts()->latest()->paginate();
+
+        logUserAccess($module_title.' '.$module_action.' | Id: '.$$module_name_singular->id);
+
+        return view(
+            "$module_path.$module_name.show",
+            compact('module_title', 'module_name', 'module_icon', 'module_name_singular', 'module_action', "$module_name_singular", 'posts')
+        );
     }
-  
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Test  $Test
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Test $Test)
-    {
-        return view('backend.test.edit',compact('Test'));
-    }
-  
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Test  $Test
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param  int  $id
+     * @return Response
      */
-    public function update(Request $request, Test $Test)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'detail' => 'required',
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Update';
+
+        $validatedData = $request->validate([
+            'name' => 'required|max:191|unique:'.$module_model.',name,'.$id,
+            'slug' => 'nullable|max:191|unique:'.$module_model.',slug,'.$id,
         ]);
-      
-        $Test->update($request->all());
-      
-        return redirect()->route('backend.test.index')
-                        ->with('success','Test updated successfully');
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Test  $Test
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Test $Test)
-    {
-        $Test->delete();
-       
-        return redirect()->route('backend.test.index')
-                        ->with('success','Test deleted successfully');
+
+        $$module_name_singular = $module_model::findOrFail($id);
+
+        $$module_name_singular->update($request->except('image', 'image_remove'));
+
+        // Image
+        if ($request->hasFile('image')) {
+            if ($$module_name_singular->getMedia($module_name)->first()) {
+                $$module_name_singular->getMedia($module_name)->first()->delete();
+            }
+            $media = $$module_name_singular->addMedia($request->file('image'))->toMediaCollection($module_name);
+
+            $$module_name_singular->image = $media->getUrl();
+
+            $$module_name_singular->save();
+        }
+        if ($request->image_remove == 'image_remove') {
+            if ($$module_name_singular->getMedia($module_name)->first()) {
+                $$module_name_singular->getMedia($module_name)->first()->delete();
+
+                $$module_name_singular->image = '';
+
+                $$module_name_singular->save();
+            }
+        }
+
+        flash(icon().' '.Str::singular($module_title)."' Updated Successfully")->success()->important();
+
+        logUserAccess($module_title.' '.$module_action.' | Id: '.$$module_name_singular->id);
+
+        return redirect()->route('backend.tags.show', $$module_name_singular->id);
     }
 }
