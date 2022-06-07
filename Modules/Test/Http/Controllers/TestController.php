@@ -2,9 +2,16 @@
 
 namespace Modules\Test\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Models\Test;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Laracasts\Flash\Flash;
 
 class TestController extends Controller
 {
@@ -17,7 +24,7 @@ class TestController extends Controller
         $this->module_name = 'test';
 
         // directory path of the module
-        $this->module_path = 'test';
+        $this->module_path = 'test::backend';
 
         // module icon
         $this->module_icon = 'c-icon fas fa-bell';
@@ -46,7 +53,7 @@ class TestController extends Controller
         Log::info(label_case($module_title.' '.$module_action).' | User:'.Auth::user()->name.'(ID:'.Auth::user()->id.')');
 
         return view(
-            "backend.$module_path.index",
+            "$module_path.$module_name.index",
             compact('module_title', 'module_name', "$module_name", 'module_path', 'module_icon', 'module_action', 'module_name_singular', 'unread_notifications_count')
         );
     }

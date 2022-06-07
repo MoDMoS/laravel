@@ -33,7 +33,7 @@
                     
                 </div>
             </div> --}}
-            <form action="{{ route('backend.test.store') }}" method="POST">
+            <form action="{{ route("backend.$module_name.store") }}" method="POST">
                 @csrf
               
                  <div class="row">

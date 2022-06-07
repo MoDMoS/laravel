@@ -30,18 +30,18 @@ class GenerateMenus
                 'class' => 'nav-link',
             ]);
 
-            $menu->add('<i class="nav-icon"></i> testing', [
-                'route' => 'backend.test.index',
-                'class' => 'nav-item',
-            ])
-            ->data([
-                'order'         => 2,
-                'activematches' => 'admin/test*',
-                'permission'    => [],
-            ])
-            ->link->attr([
-                'class' => 'nav-link',
-            ]);
+            // $menu->add('<i class="nav-icon"></i> testing', [
+            //     'route' => 'backend.test.index',
+            //     'class' => 'nav-item',
+            // ])
+            // ->data([
+            //     'order'         => 2,
+            //     'activematches' => 'admin/test*',
+            //     'permission'    => [],
+            // ])
+            // ->link->attr([
+            //     'class' => 'nav-link',
+            // ]);
 
             // Notifications
             $menu->add('<i class="nav-icon fas fa-bell"></i> Notifications', [

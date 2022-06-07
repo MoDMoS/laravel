@@ -33,10 +33,10 @@ class TestServiceProvider extends ServiceProvider
 
         // adding global middleware
         $kernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
-        $kernel->pushMiddleware('Modules\Tag\Http\Middleware\GenerateMenus');
+        $kernel->pushMiddleware('Modules\Test\Http\Middleware\GenerateMenus');
 
         // register commands
-        $this->registerCommands('\Modules\Tag\Console');
+        $this->registerCommands('\Modules\Test\Console');
     }
 
     /**
