@@ -58,13 +58,71 @@ class TestController extends Controller
         );
     }
 
+    public function index_data()
+    {
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'List';
+
+        $page_heading = label_case($module_title);
+        $title = $page_heading.' '.label_case($module_action);
+
+        $$module_name = $module_model::select('id', 'name', 'updated_at');
+
+        $data = $$module_name;
+
+        return Datatables::of($$module_name)
+                        ->addColumn('action', function ($data) {
+                            $module_name = $this->module_name;
+
+                            return view('backend.includes.action_column', compact('module_name', 'data'));
+                        })
+                        ->editColumn('name', '<strong>{{$name}}</strong>')
+                        ->editColumn('updated_at', function ($data) {
+                            $module_name = $this->module_name;
+
+                            $diff = Carbon::now()->diffInHours($data->updated_at);
+
+                            if ($diff < 25) {
+                                return $data->updated_at->diffForHumans();
+                            } else {
+                                return $data->updated_at->isoFormat('llll');
+                            }
+                        })
+                        ->rawColumns(['name', 'action'])
+                        ->orderColumns(['id'], '-:column $1')
+                        ->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      * @return Renderable
      */
     public function create()
     {
-        return view('test::create');
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Create';
+
+        $$module_name = auth()->user()->notifications()->paginate();
+        $unread_notifications_count = auth()->user()->unreadNotifications()->count();
+
+        Log::info(label_case($module_title.' '.$module_action).' | User:'.Auth::user()->name.'(ID:'.Auth::user()->id.')');
+
+        return view(
+            "$module_path.$module_name.create",
+            compact('module_title', 'module_name', "$module_name", 'module_path', 'module_icon', 'module_action', 'module_name_singular', 'unread_notifications_count')
+        );
     }
 
     /**
@@ -159,7 +217,6 @@ class TestController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|max:191|unique:'.$module_model.',name,'.$id,
-            'slug' => 'nullable|max:191|unique:'.$module_model.',slug,'.$id,
         ]);
 
         $$module_name_singular = $module_model::findOrFail($id);

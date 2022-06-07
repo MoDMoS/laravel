@@ -4,71 +4,121 @@
 
 @section('breadcrumbs')
 <x-backend-breadcrumbs>
-    <x-backend-breadcrumb-item type="active">{{ __($module_title) }}</x-backend-breadcrumb-item>
+    <x-backend-breadcrumb-item type="active" icon='{{ $module_icon }}'>{{ __($module_title) }}</x-backend-breadcrumb-item>
 </x-backend-breadcrumbs>
 @endsection
 
 @section('content')
-<div class="card mb-4 ">
+<div class="card">
     <div class="card-body">
+
         <x-backend.section-header>
-        {{ __($module_title) }} <small class="text-muted">{{ __($module_action) }}</small>
+            <i class="{{ $module_icon }}"></i> {{ __($module_title) }} <small class="text-muted">{{ __($module_action) }}</small>
+            <x-slot name="subtitle">
+                @lang(":module_name Management Dashboard", ['module_name'=>Str::title($module_name)])
+            </x-slot>
+            <x-slot name="toolbar">
+                @can('add_'.$module_name)
+                <x-buttons.create route='{{ route("backend.$module_name.create") }}' title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}" />
+                @endcan
 
-        <x-slot name="subtitle">
-            @lang(":module_name Management Dashboard", ['module_name'=>Str::title($module_name)])
-        </x-slot>
-    </x-backend.section-header>
-
-    <hr>
-
-        {{-- {{ html()->form('POST', route("backend.$module_name"))->acceptsFiles()->class('form')->open() }} --}}
-        <!-- Dashboard Content Area -->
-        <div class="row mb-3">
-            {{-- <div class="col-12 col-sm-4">
-                <div class="form-group">
-                    
-                    {{ html()->label($field_lable, $field_name)->class('form-label') }} {!! fielf_required($required) !!}
-                    {{ html()->text($field_name)->placeholder($field_placeholder)->class('form-control')->attributes(["$required"]) }}
-                
-                    
+                @can('restore_'.$module_name)
+                <div class="btn-group">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-coreui-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    {{-- <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href='{{ route("backend.$module_name.trashed") }}'>
+                                <i class="fas fa-eye-slash"></i> View trash
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <hr class="dropdown-divider">
+                        </li> -->
+                    </ul> --}}
                 </div>
-            </div> --}}
-            <form action="{{ route("backend.$module_name.store") }}" method="POST">
-                @csrf
-              
-                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <strong>Name:</strong>
-                            <input type="text" name="name" class="form-control" placeholder="Name">
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <strong>Detail:</strong>
-                            <textarea class="form-control" style="height:150px" name="detail" placeholder="Detail"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <strong>Image:</strong>
-                            <input type="file" name="image" class="form-control" placeholder="image">
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </div>
-               
-            </form>
+                @endcan
+            </x-slot>
+        </x-backend.section-header>
+        <span>{{$module_name}}</span>
+        <div class="row mt-4">
+            <div class="col">
+                <table id="datatable" class="table table-bordered table-hover table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Updated At
+                            </th>
+                            <th class="text-end">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
-        
-        <!-- / Dashboard Content Area -->
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-7">
+                <div class="float-left">
 
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="float-end">
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<!-- / card -->
-
-
 
 @endsection
+
+@push ('after-styles')
+<!-- DataTables Core and Extensions -->
+<link rel="stylesheet" href="{{ asset('vendor/datatable/datatables.min.css') }}">
+
+@endpush
+
+@push ('after-scripts')
+<!-- DataTables Core and Extensions -->
+<script type="text/javascript" src="{{ asset('vendor/datatable/datatables.min.js') }}"></script>
+
+<script type="text/javascript">
+    $('#datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        autoWidth: true,
+        responsive: true,
+        ajax: '{{ route("backend.$module_name.index_data") }}',
+        columns: [{
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'updated_at',
+                name: 'updated_at'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            }
+        ]
+    });
+</script>
+@endpush
