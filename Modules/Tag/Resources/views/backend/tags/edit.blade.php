@@ -40,8 +40,7 @@
                             {{ html()->submit($text = icon('fas fa-save')." Save")->class('btn btn-success') }}
                         </div>
                     </div>
-                    {{ html()->form()->close() }}
-
+                    
                     <div class="col-8">
                         <div class="float-end">
                             @can('delete_'.$module_name)
@@ -51,7 +50,8 @@
                         </div>
                     </div>
                 </div>
-
+                
+                {{ html()->form()->close() }}
             </div>
         </div>
     </div>
