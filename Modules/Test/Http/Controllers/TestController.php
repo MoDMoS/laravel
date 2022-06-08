@@ -207,7 +207,7 @@ class TestController extends Controller
 
         return view(
             "$module_path.$module_name.edit",
-            compact('module_title', 'module_name', 'module_icon', 'module_name_singular', 'module_action')
+            compact('module_title', 'module_name', 'module_icon', 'module_name_singular', 'module_action', 'module_path')
         );
     }
 
