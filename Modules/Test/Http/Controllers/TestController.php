@@ -177,15 +177,15 @@ class TestController extends Controller
 
         $module_action = 'Show';
 
-        $$module_name_singular = $module_model::findOrFail($id);
+        // $$module_name_singular = $module_model::findOrFail($id);
 
-        $posts = $$module_name_singular->posts()->latest()->paginate();
+        // $posts = $$module_name_singular->posts()->latest()->paginate();
 
-        logUserAccess($module_title.' '.$module_action.' | Id: '.$$module_name_singular->id);
+        // logUserAccess($module_title.' '.$module_action.' | Id: '.$$module_name_singular->id);
 
         return view(
             "$module_path.$module_name.show",
-            compact('module_title', 'module_name', 'module_icon', 'module_name_singular', 'module_action', "$module_name_singular", 'posts')
+            compact('module_title', 'module_name', 'module_icon', 'module_name_singular', 'module_action')
         );
     }
 
