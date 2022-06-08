@@ -14,7 +14,7 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <x-backend.section-header>
+        {{-- <x-backend.section-header>
             <i class="{{ $module_icon }}"></i> {{ __($module_title) }} <small class="text-muted">{{ __($module_action) }}</small>
 
             <x-slot name="subtitle">
@@ -24,13 +24,13 @@
                 <x-buttons.return-back />
                 <x-buttons.show route='{!!route("backend.$module_name.show", $$module_name_singular)!!}' title="{{__('Show')}} {{ ucwords(Str::singular($module_name)) }}" class="ms-1" />
             </x-slot>
-        </x-backend.section-header>
+        </x-backend.section-header> --}}
 
         <hr>
 
         <div class="row mt-4">
             <div class="col">
-                {{ html()->modelForm($$module_name_singular, 'PATCH', route("backend.$module_name.update", $$module_name_singular))->acceptsFiles()->class('form')->open() }}
+                {{-- {{ html()->modelForm($$module_name_singular, 'PATCH', route("backend.$module_name.update", $$module_name_singular))->acceptsFiles()->class('form')->open() }}
 
                 @include ("$module_path.$module_name.index")
 
@@ -50,21 +50,21 @@
                         </div>
                     </div>
                 </div>
-                {{ html()->form()->close() }}
+                {{ html()->form()->close() }} --}}
 
             </div>
         </div>
     </div>
 
     <div class="card-footer">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col">
                 <small class="float-end text-muted">
                     Updated: {{$$module_name_singular->updated_at->diffForHumans()}},
                     Created at: {{$$module_name_singular->created_at->isoFormat('LLLL')}}
                 </small>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 

@@ -196,7 +196,19 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-        return view('test::edit');
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Edit';
+
+        return view(
+            "$module_path.$module_name.edit",
+            compact('module_title', 'module_name', 'module_icon', 'module_name_singular', 'module_action')
+        );
     }
 
     /**

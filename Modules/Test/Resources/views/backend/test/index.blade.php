@@ -41,7 +41,6 @@
                 @endcan
             </x-slot>
         </x-backend.section-header>
-        <span>{{$module_name}}</span>
         <div class="row mt-4">
             <div class="col">
                 <table id="datatable" class="table table-bordered table-hover table-responsive-sm">
@@ -102,7 +101,7 @@
         ajax: '{{ route("backend.$module_name.index_data") }}',
         columns: [{
                 data: 'id',
-                name: 'id'
+                name: 'id',
             },
             {
                 data: 'name',
