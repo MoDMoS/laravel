@@ -13,7 +13,7 @@
     <div class="card-body">
 
         <x-backend.section-header>
-            <i class="{{ $module_icon }}"></i> {{ __($module_title) }} <small class="text-muted">{{ __($module_action) }}</small>
+            {{ __($module_title) }} <small class="text-muted">{{ __($module_action) }}</small>
             <x-slot name="subtitle">
                 @lang(":module_name Management Dashboard", ['module_name'=>Str::title($module_name)])
             </x-slot>
