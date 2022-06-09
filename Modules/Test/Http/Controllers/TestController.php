@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laracasts\Flash\Flash;
 use Yajra\DataTables\DataTables;
+use App\Authorizable;
+use App\Http\Controllers\Backend\BackendBaseController;
 
 class TestController extends Controller
 {
+    use Authorizable;
+    
     public function __construct()
     {
         // Page Title
@@ -271,6 +275,78 @@ class TestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'destroy';
+
+        $$module_name_singular = $module_model::findOrFail($id);
+
+        $$module_name_singular->delete();
+
+        flash('<i class="fas fa-check"></i> '.label_case($module_name_singular).' Deleted Successfully!')->success()->important();
+
+        logUserAccess($module_title.' '.$module_action.' | Id: '.$$module_name_singular->id);
+
+        return redirect("admin/$module_name");
+    }
+
+    /**
+     * Restore a soft deleted entry.
+     *
+     * @param  Request  $request
+     * @param  int  $id
+     * @return Response
+     */
+    public function restore($id)
+    {
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Restore';
+
+        $$module_name_singular = $module_model::withTrashed()->find($id);
+        $$module_name_singular->restore();
+
+        flash('<i class="fas fa-check"></i> '.label_case($module_name_singular).' Data Restoreded Successfully!')->success()->important();
+
+        logUserAccess($module_title.' '.$module_action.' | Id: '.$$module_name_singular->id);
+
+        return redirect("admin/$module_name");
+    }
+
+    /**
+     * List of trashed ertries
+     * works if the softdelete is enabled.
+     *
+     * @return Response
+     */
+    public function trashed()
+    {
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Trash List';
+
+        // $$module_name = $module_model::onlyTrashed()->orderBy('deleted_at', 'desc')->paginate();
+
+        // logUserAccess($module_title.' '.$module_action);
+
+        return view(
+            "$module_path.$module_name.trash",
+            compact('module_title', 'module_name', 'module_path', "$module_name", 'module_icon', 'module_name_singular', 'module_action')
+        );
     }
 }

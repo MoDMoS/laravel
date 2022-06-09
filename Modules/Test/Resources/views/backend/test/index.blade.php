@@ -27,16 +27,16 @@
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-coreui-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-cog"></i>
                     </button>
-                    {{-- <ul class="dropdown-menu">
+                    <ul class="dropdown-menu">
                         <li>
                             <a class="dropdown-item" href='{{ route("backend.$module_name.trashed") }}'>
                                 <i class="fas fa-eye-slash"></i> View trash
                             </a>
                         </li>
-                        <!-- <li>
+                        {{-- <li>
                             <hr class="dropdown-divider">
-                        </li> -->
-                    </ul> --}}
+                        </li> --}}
+                    </ul>
                 </div>
                 @endcan
             </x-slot>
